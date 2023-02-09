@@ -15,6 +15,7 @@ cursor.execute("select account_balance from users where uid = %s", (uid, ))
 acc_bal ="₹ "+str("{:,}".format(cursor.fetchone()[0]))
 
 st.metric(label='Account Balance', value=acc_bal)
+st.write(' ')
 
 st.subheader('Transactions in the past 7 days')
 sel_date = date.today() - relativedelta(days=7)

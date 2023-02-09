@@ -70,3 +70,16 @@ select rec_stats('abc123', '2023-01-29');
 
 call update_acc_bal('abc123');
 
+
+-- create or replace function pie_chart(auid varchar(25), sel_date date)
+-- returns table(tid varchar(25), tdate date, usr varchar(20), rec varchar(20), amt int, t char(10), cat varchar(25))
+-- language plpgsql
+-- as $$
+-- begin
+-- return query
+	select r.cat_id, ca.category_name, sum(r.amount)
+	from record r
+	join category ca
+	on r.cat_id = ca.category_id
+	group by r.cat_id;
+

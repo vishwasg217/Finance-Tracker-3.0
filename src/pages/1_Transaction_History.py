@@ -3,36 +3,18 @@ import pandas as pd
 from datetime import date
 from dateutil.relativedelta import relativedelta
 import connect
+import filters
 
 uid = 'abc123'
 cursor = connect.connect()
 
-date_options = ['7 Days', '1 Month', '3 Months', '6 Months', '1 year', 'All Time']
-date_select = st.selectbox('Range', date_options)
-
-sel_date = ''
-match date_select:
-    case '7 Days':
-        sel_date = date.today() - relativedelta(days=7)
-    case '1 Month':
-        sel_date = date.today() - relativedelta(months=1)
-    case '3 Months':
-        sel_date = date.today() - relativedelta(months=3)
-    case '6 Months':
-        sel_date = date.today() - relativedelta(months=6)
-    case '1 year':
-        sel_date = date.today() - relativedelta(years=1)
-    case 'All Time':
-        sel_date = date.today() - relativedelta(years=5)
+sel_date = filters.date_range('Range')
     
-        
 try: 
     cursor.execute('select * from rec(%s, %s)', (uid, sel_date))
     df = pd.DataFrame(cursor.fetchall())
     df.columns = ['Transaction ID', 'Transaction Date', 'Sender', 'Receiver', 'Amount', 'Type', 'Category']
-    category_options = sorted(df['Category'].unique())
-    category_select = st.multiselect('Category', category_options, category_options)
-    df = df[(df['Category'].isin(category_select))]
+    df = filters.category_select(df)
     if df.empty:
         st.error('No transactions in this time frame')
     else:
