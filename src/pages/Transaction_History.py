@@ -32,7 +32,6 @@ try:
     df.columns = ['Transaction ID', 'Transaction Date', 'Sender', 'Receiver', 'Amount', 'Type', 'Category']
     category_options = sorted(df['Category'].unique())
     category_select = st.multiselect('Category', category_options, category_options)
-    #print(df)
     df = df[(df['Category'].isin(category_select))]
     if df.empty:
         st.error('No transactions in this time frame')
