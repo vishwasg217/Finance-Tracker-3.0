@@ -79,12 +79,12 @@ def show_main_page():
     except(ValueError, TypeError):
         st.error('No Transactions')
 
-def show_signup_button():
-    with signup_section:
-        st.markdown("""---""")
-        st.subheader('Sign Up')
-        if st.button('sign up', on_click=sign_up.details_1):
-            st.session_state['sign_up'] = True
+# def show_signup_button():
+#     with signup_section:
+#         st.markdown("""---""")
+#         st.subheader('Sign Up')
+#         if st.button('sign up', on_click=sign_up.details_1):
+#             st.session_state['sign_up'] = True
 
 
 def show_logout_button():
@@ -98,13 +98,13 @@ with header_section:
         st.session_state['logged_in'] = False
         st.session_state['sign_up'] = False
         show_login_page()
-        show_signup_button()
+        # show_signup_button()
     else:
         if st.session_state['logged_in']:
             show_main_page()
-            show_logout_button()
+            # show_logout_button()
         if st.session_state['sign_up']:
             sign_up.details_1()
         else:
             show_login_page()
-            show_signup_button()
+            # show_signup_button()
