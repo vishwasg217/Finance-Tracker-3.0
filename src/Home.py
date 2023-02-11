@@ -4,6 +4,7 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 import connect
+import sign_up
 
 header_section = st.container()
 login_section = st.container()
@@ -34,12 +35,10 @@ def logout():
 def show_login_page():
     with login_section:
         if st.session_state['logged_in'] == False:
+            st.subheader('Login')            
             username = st.text_input("Enter your username:")
             passwd = st.text_input("Enter your password", type='password')
             st.button("Login", on_click=verify_account, args=(username, passwd))
-
-    with signup_section:
-        st.markdown("""---""")
 
 def show_main_page():
     try: 
@@ -80,6 +79,14 @@ def show_main_page():
     except(ValueError, TypeError):
         st.error('No Transactions')
 
+def show_signup_button():
+    with signup_section:
+        st.markdown("""---""")
+        st.subheader('Sign Up')
+        if st.button('sign up', on_click=sign_up.details_1):
+            st.session_state['sign_up'] = True
+
+
 def show_logout_button():
     if st.session_state['logged_in']:
         st.sidebar.button('Logout', on_click=logout)    
@@ -89,20 +96,15 @@ with header_section:
     st.write(' ')
     if 'logged_in' not in st.session_state:
         st.session_state['logged_in'] = False
+        st.session_state['sign_up'] = False
         show_login_page()
+        show_signup_button()
     else:
         if st.session_state['logged_in']:
             show_main_page()
             show_logout_button()
+        if st.session_state['sign_up']:
+            sign_up.details_1()
         else:
             show_login_page()
-
-
-
-
-
-
-
-
-
-
+            show_signup_button()

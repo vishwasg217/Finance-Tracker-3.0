@@ -42,44 +42,22 @@ $$;
 select * from rec('abc123', '2021-09-01');
 
 
-create or replace function rec_stats(auid varchar(25), sel_date date)
-returns table(inc int, exp int)
+create or replace function cashflow(auid varchar(25), sel_date date)
+returns table(ct bigint, s bigint)
 language plpgsql
 as $$
-declare inc1 int;
-declare exp1 int;
 begin
-	
-	select sum(amount) into inc1
-	from record r
-	where type = 'income'
-	and r.sender_id = auid
-	and r.trans_date between sel_date and current_date;
-	
-	select sum(amount) into exp1
-	from record r
-	where type = 'expense'
-	and r.sender_id = auid
-	and r.trans_date between sel_date and current_date;
-	
-return query select coalesce(inc1, 0) as inc, coalesce(exp1, 0) as inc;
-end;
-$$;
-
-select rec_stats('abc123', '2023-01-29');
-
-call update_acc_bal('abc123');
-
-
--- create or replace function pie_chart(auid varchar(25), sel_date date)
--- returns table(tid varchar(25), tdate date, usr varchar(20), rec varchar(20), amt int, t char(10), cat varchar(25))
--- language plpgsql
--- as $$
--- begin
--- return query
-	select r.cat_id, ca.category_name, sum(r.amount)
+return query
+	select count(r.transaction_id), sum(r.amount)
 	from record r
 	join category ca
-	on r.cat_id = ca.category_id
-	group by r.cat_id;
+	on ca.category_id = r.cat_id
+	where r.sender_id = auid
+	and r.trans_date between sel_date and current_date
+	group by ca.type
+	order by ca.type desc;
+end
+$$;
+select * from cashflow('abc123', '2020-05-04');
+
 
