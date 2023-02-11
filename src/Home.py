@@ -19,7 +19,7 @@ def verify_account(username, passwd):
             st.session_state['logged_in'] = True
             cursor.execute('select uid from users where username = %s', (username, ))
             uid = cursor.fetchone()[0]
-            with open('uid.txt', 'w') as f:
+            with open('data/uid.txt', 'w') as f:
                 f.write(uid)
         else:
             st.error("Invalid username or password")
@@ -43,7 +43,7 @@ def show_login_page():
 
 def show_main_page():
     try: 
-        f = open('uid.txt', 'r')
+        f = open('data/uid.txt', 'r')
         uid = f.read()
         cursor.execute("select account_balance from users where uid = %s", (uid, ))
         acc_bal ="₹ "+str("{:,}".format(cursor.fetchone()[0]))

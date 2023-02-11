@@ -5,7 +5,7 @@ import filters
 
 cursor = connect.connect()
 
-f = open('uid.txt', 'r')
+f = open('data/uid.txt', 'r')
 uid = f.read()
 sel_date = filters.date_range('Range')
     

@@ -7,7 +7,7 @@ import filters
 
 cursor = connect.connect()
 
-f = open('uid.txt', 'r')
+f = open('data/uid.txt', 'r')
 uid = f.read()
 
 tab1, tab2 = st.tabs(['Income', 'Expense'])
