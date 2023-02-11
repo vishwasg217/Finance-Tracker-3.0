@@ -1,15 +1,14 @@
 import streamlit as st
 import pandas as pd
-from datetime import date
-from dateutil.relativedelta import relativedelta
 import plotly.express as px
-import plotly.io as pio
 
 import connect
 import filters
 
-uid = 'abc123'
 cursor = connect.connect()
+
+f = open('uid.txt', 'r')
+uid = f.read()
 
 tab1, tab2 = st.tabs(['Income', 'Expense'])
 
@@ -28,9 +27,7 @@ with tab1:
             title = 'Income'
         )
         pie_chart.update_traces(textposition='inside', textinfo='percent+label')
-
         st.plotly_chart(pie_chart, use_container_width=True)
-
         st.dataframe(df)
 
     except(ValueError):
@@ -51,15 +48,11 @@ with tab2:
             title = 'Expenses'
         )
         pie_chart.update_traces(textposition='inside', textinfo='percent+label')
-
         st.plotly_chart(pie_chart, use_container_width=True)
-
         st.dataframe(df)
 
     except(ValueError):
-        st.error('Empty Set')
-
-    # st.write(df) 
+        st.error('No Transactions')
 
 
 

@@ -1,13 +1,12 @@
 import streamlit as st
 import pandas as pd
-from datetime import date
-from dateutil.relativedelta import relativedelta
 import connect
 import filters
 
-uid = 'abc123'
 cursor = connect.connect()
 
+f = open('uid.txt', 'r')
+uid = f.read()
 sel_date = filters.date_range('Range')
     
 try: 
@@ -16,7 +15,7 @@ try:
     df.columns = ['Transaction ID', 'Transaction Date', 'Sender', 'Receiver', 'Amount', 'Type', 'Category']
     df = filters.category_select(df)
     if df.empty:
-        st.error('No transactions in this time frame')
+        st.error('No Transactions')
     else:
         stats_container = st.container()
         st.write('Number of Transactions: ', str(len(df)))
@@ -37,7 +36,7 @@ try:
             col3.metric(label='Total Expenses', value=exp)
 
 except(ValueError):
-    st.error("No transactions in this time333 frame")
+    st.error('No Transactions')
 
 
 
