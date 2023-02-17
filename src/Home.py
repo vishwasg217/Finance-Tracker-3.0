@@ -4,7 +4,7 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 import connect
-import sign_up
+#import utilities.sign_up as sign_up
 
 header_section = st.container()
 login_section = st.container()
@@ -84,7 +84,8 @@ def show_main_page():
 #         st.markdown("""---""")
 #         st.subheader('Sign Up')
 #         if st.button('sign up', on_click=sign_up.details_1):
-#             st.session_state['sign_up'] = True
+#             sign_up.sign_up()
+#             sign_up.next_page
 
 
 def show_logout_button():
@@ -96,15 +97,17 @@ with header_section:
     st.write(' ')
     if 'logged_in' not in st.session_state:
         st.session_state['logged_in'] = False
+        st.session_state.page = 0
         st.session_state['sign_up'] = False
         show_login_page()
         # show_signup_button()
     else:
         if st.session_state['logged_in']:
             show_main_page()
-            # show_logout_button()
+            show_logout_button()
         if st.session_state['sign_up']:
-            sign_up.details_1()
+            pass
+            #sign_up.details_1()
         else:
             show_login_page()
             # show_signup_button()

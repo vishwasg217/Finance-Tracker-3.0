@@ -38,14 +38,18 @@ account_balance = form.number_input("Enter your bank account balance", step=1)
 
 button = form.form_submit_button('Confirm')
 
+
 if button:
     if passwd == check:
-        cursor.execute('''
-        insert into users 
-        values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
-        (uid, username, passwd, first_name, last_name, email_id, dob, gender, bank_id, bank_account_id, account_balance))
-        conn.commit()
-        st.success('New account created!! Please go to home page to login')
-        st.session_state['sign_up'] = False
+        if username == '' or passwd == '' or first_name == '' or last_name == '' or email_id == '' or dob == '' or gender == '' or bank_id == '' or bank_account_id == '' or account_balance == '':
+            st.error('Please fill in all the fields')            
+        else:
+            cursor.execute('''
+            insert into users 
+            values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
+            (uid, username, passwd, first_name, last_name, email_id, dob, gender, bank_id, bank_account_id, account_balance))
+            conn.commit()
+            st.success('New account created!! Please go to home page to login')
+            st.session_state['sign_up'] = False
     else: 
         st.error('Passwords do not match')

@@ -1,0 +1,6 @@
+"uid","username","password","email_id","first_name","last_name","dob ","gender","bank_id","bank_account_id","account_balance"
+"22d7ef69","","","","                    ","                    ","2023-02-14","m","bank1","",0
+"60a10634","","","","                    ","                    ","2023-02-14","m","bank1","",0
+"abc123","vishwas21","acbd2134","abc@gmail.com","vishwas             ","gowda               ","2002-11-21","m","bank1","122-abc",344921
+"cb8d5442","fcb777","barca7","fcb","barca               ","barca@gmail.com     ","2013-02-13","m","bank2","fbcc-7744",50000
+"xyz555","cust2","pass2","xyz@gmail.com","hello               ","hi                  ","2002-05-03","m","bank2","333-efg",40000

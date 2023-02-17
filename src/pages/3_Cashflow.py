@@ -22,8 +22,9 @@ if st.session_state['logged_in'] == True:
     try:
         cursor.execute('select * from cashflow(%s, %s)', (uid, sel_date))
         df = pd.DataFrame(cursor.fetchall()).transpose()
-        df = df.rename(columns={df.columns[0]: 'Income'})
-        df = df.rename(index={0: 'Number of Transactions', 1: 'Total'})
+        if len(df.axes[1]) > 0:
+            df = df.rename(columns={df.columns[0]: 'Income'})
+            df = df.rename(index={0: 'Number of Transactions', 1: 'Total'})
         inc = 0
         exp = 0
         if len(df.axes[1]) > 1:

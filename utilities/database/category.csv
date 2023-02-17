@@ -1,0 +1,24 @@
+category_id,category_name,type
+1,Shopping,expense
+2,Mortgage & Rent,expense
+3,Restaurants,expense
+4,Movies & DVDs,expense
+5,Home Improvement,expense
+6,Utilities,expense
+7,Music,expense
+8,Mobile Phone,expense
+9,Gas & Fuel,expense
+10,Groceries,expense
+11,Fast Food,expense
+12,Coffee Shops,expense
+13,Internet,expense
+14,Haircut,expense
+15,Alcohol & Bars,expense
+16,Auto Insurance,expense
+17,Entertainment,expense
+18,Food & Dining,expense
+19,Television,expense
+20,Electronics & Software,expense
+101,Salary,income
+102,Mutual Funds,income
+103,Stocks,income
