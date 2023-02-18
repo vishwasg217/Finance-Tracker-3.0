@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 import connect
 #import utilities.sign_up as sign_up
 
+
 header_section = st.container()
 login_section = st.container()
 signup_section = st.container()
@@ -66,15 +67,33 @@ def show_main_page():
             exp = df.loc[df['Type'] == 'expense']['Amount'].sum()
             net = inc - exp
 
-            net = "₹ "+str("{:,}".format(net))
+            delta_exp = ((exp/inc)*100).round(2)
+            delta_inc = ((net/inc)*100).round(2)
+
             inc =  "₹ "+str("{:,}".format(inc))
             exp = "₹ "+str("{:,}".format(exp))
+            net = "₹ "+str("{:,}".format(net))
+
+            delta_exp = str(delta_exp)+"%"
+            delta_inc = str(delta_inc)+"%"
 
             with stats_container:
                 col1, col2, col3, = st.columns(3)
-                col1.metric(label='Net Income', value=net)
-                col2.metric(label='Total Income', value=inc)
-                col3.metric(label='Total Expenses', value=exp)  
+                col1.metric(label='Total Income', value=inc)
+                col2.metric(label='Total Expenses', value=exp, delta=delta_exp, delta_color='off')  
+                col3.metric(label='Savings', value=net, delta=delta_inc, delta_color='off')
+
+        st.subheader('Line Chart')
+        cursor.execute('select * from line_chart(%s, %s)', (uid, 'income'))
+        inc = pd.DataFrame(cursor.fetchall())
+        cursor.execute('select * from line_chart(%s, %s)', (uid, 'expense'))
+        exp = pd.DataFrame(cursor.fetchall())
+        df = pd.concat([inc, exp], axis=True, ignore_index=True)
+        
+        df.drop([2, 3], axis=1, inplace=True)
+        df.columns = ['date', 'income', 'expense', 'savings target']
+        df['savings'] = df['income'] - df['expense']
+        st.line_chart(data=df,x='date',y=('income', 'expense', 'savings', 'savings target'), use_container_width=True)
 
     except(ValueError, TypeError):
         st.error('No Transactions')

@@ -5,8 +5,11 @@ import plotly.express as px
 import connect
 import filters
 
-if st.session_state['logged_in'] == True:
+st.set_page_config(layout="wide")
 
+
+if st.session_state['logged_in'] == True:
+    st.title('Category Breakdown')
     cursor = connect.connect()
 
     f = open('data/uid.txt', 'r')
@@ -22,14 +25,21 @@ if st.session_state['logged_in'] == True:
             df = pd.DataFrame(cursor.fetchall())
             df.columns = ['Category', 'Amount']
             df = filters.category_select(df)
+            col1, col2 = tab1.columns(2)
             pie_chart = px.pie(
                 data_frame = df,
                 values = 'Amount',
                 names = 'Category',
                 title = 'Income'
             )
+            bar_chart = px.bar(
+                data_frame=df,
+                x="Category",
+                y="Amount",               
+            )
             pie_chart.update_traces(textposition='inside', textinfo='percent+label')
-            st.plotly_chart(pie_chart, use_container_width=True)
+            col1.plotly_chart(pie_chart, use_container_width=True)
+            col2.plotly_chart(bar_chart, use_container_width=True)
             st.dataframe(df)
 
         except(ValueError):
@@ -43,14 +53,21 @@ if st.session_state['logged_in'] == True:
             df = pd.DataFrame(cursor.fetchall())
             df.columns = ['Category', 'Amount']
             df = filters.category_select(df)
+            col3, col4 = tab2.columns(2)
             pie_chart = px.pie(
                 data_frame = df,
                 values = 'Amount',
                 names = 'Category',
-                title = 'Expenses'
+                title = 'Income'
+            )
+            bar_chart = px.bar(
+                data_frame=df,
+                x="Category",
+                y="Amount",               
             )
             pie_chart.update_traces(textposition='inside', textinfo='percent+label')
-            st.plotly_chart(pie_chart, use_container_width=True)
+            col3.plotly_chart(pie_chart, use_container_width=True)
+            col4.plotly_chart(bar_chart, use_container_width=True)
             st.dataframe(df)
 
         except(ValueError):

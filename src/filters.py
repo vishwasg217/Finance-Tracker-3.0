@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import date
+import connect
 from dateutil.relativedelta import relativedelta
 
 def date_range(name: str):
@@ -27,3 +28,14 @@ def category_select(df: pd.DataFrame):
     category_select = st.multiselect('Category', category_options, category_options)
     df = df[(df['Category'].isin(category_select))]
     return df
+
+def category_select2():
+    cursor = connect.connect()
+    cursor.execute('select category_name from category order by category_name')
+    category_options = cursor.fetchall()
+    cat_options = []
+    for i in category_options:
+        for j in i:
+            cat_options.append(j)
+    category_select = st.selectbox('Category', cat_options)
+    return category_select

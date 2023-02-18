@@ -60,4 +60,26 @@ end
 $$;
 select * from cashflow('abc123', '2020-05-04');
 
+create or replace function line_chart(auid varchar(25), t_type varchar(10))
+returns table(t date, s bigint, tar integer)
+language plpgsql
+as $$ 
+begin 
+return query
+	select date_trunc('month', r.trans_date)::date, sum(r.amount), u.savings_target
+	from record r
+	join category ca
+	on ca.category_id = r.cat_id
+	join users u
+	on r.sender_id = u.uid
+	where ca.type = t_type
+	and r.sender_id = auid
+	group by date_trunc('month', r.trans_date), u.savings_target
+	order by date_trunc('month', r.trans_date), u.savings_target;
+end
+$$;
+
+select * from line_chart('abc123', 'income');
+
+
 

@@ -3,8 +3,11 @@ import pandas as pd
 import connect
 import filters
 
-if st.session_state['logged_in'] == True:
+st.set_page_config(layout="wide")
 
+
+if st.session_state['logged_in'] == True:
+    st.title('Transaction History')
     cursor = connect.connect()
 
     f = open('data/uid.txt', 'r')
@@ -27,15 +30,21 @@ if st.session_state['logged_in'] == True:
             exp = df.loc[df['Type'] == 'expense']['Amount'].sum()
             net = inc - exp
 
+            delta_exp = ((exp/inc)*100).round(2)
+            delta_inc = ((net/inc)*100).round(2)
+
             net = "₹ "+str("{:,}".format(net))
             inc =  "₹ "+str("{:,}".format(inc))
             exp = "₹ "+str("{:,}".format(exp))
 
+            delta_exp = str(delta_exp)+"%"
+            delta_inc = str(delta_inc)+"%"
+
             with stats_container:
                 col1, col2, col3, = st.columns(3)
-                col1.metric(label='Net Income', value=net)
-                col2.metric(label='Total Income', value=inc)
-                col3.metric(label='Total Expenses', value=exp)
+                col1.metric(label='Total Income', value=inc)
+                col2.metric(label='Total Expenses', value=exp, delta=delta_exp, delta_color='off')
+                col3.metric(label='Savings', value=net, delta=delta_inc, delta_color='off')
 
     except(ValueError):
         st.error('No Transactions')

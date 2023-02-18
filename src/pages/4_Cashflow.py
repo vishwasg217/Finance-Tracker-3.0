@@ -4,9 +4,12 @@ import pandas as pd
 import connect
 import filters
 
+st.set_page_config(layout="wide")
+
+
 if st.session_state['logged_in'] == True:
 
-
+    st.title('Cashflow')
     cursor = connect.connect()
 
     cashflow_section = st.container()
