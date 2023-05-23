@@ -1,9 +1,10 @@
 import streamlit as st
 import pandas as pd
+import psycopg2
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
-import connect
+# import connect
 #import utilities.sign_up as sign_up
 
 
@@ -11,7 +12,12 @@ header_section = st.container()
 login_section = st.container()
 signup_section = st.container()
 
-cursor = connect.connect()
+# cursor = connect.connect()
+conn = psycopg2.connect(
+    **st.secrets["postgres"]
+    )
+
+cursor = conn.cursor()
 
 def verify_account(username, passwd):
     try:
