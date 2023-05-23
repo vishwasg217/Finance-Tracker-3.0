@@ -84,9 +84,9 @@ def show_main_page():
                 col3.metric(label='Savings', value=net, delta=delta_inc, delta_color='off')
 
         st.subheader('Line Chart')
-        cursor.execute('select * from line_chart(%s, %s)', (uid, 'income'))
+        cursor.execute('select * from inc_line_chart(%s)', (uid, ))
         inc = pd.DataFrame(cursor.fetchall())
-        cursor.execute('select * from line_chart(%s, %s)', (uid, 'expense'))
+        cursor.execute('select * from exp_line_chart(%s)', (uid, ))
         exp = pd.DataFrame(cursor.fetchall())
         df = pd.concat([inc, exp], axis=True, ignore_index=True)
         
